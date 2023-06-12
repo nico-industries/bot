@@ -1,0 +1,9 @@
+# Exclude everything
+*
+
+# Make exceptions for what's needed
+!bot
+!prisma
+!.env
+!pyproject.toml
+!poetry.lock
