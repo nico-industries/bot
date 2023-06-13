@@ -15,14 +15,14 @@ __all__: tuple[str, ...] = ("Skurczybyk",)
 
 
 class Skurczybyk(commands.Bot):
-    def __init__(self):
+    def __init__(self) -> None:
         self.logger = Logger(name="Skurczybyk")
         self.http_session = aiohttp.ClientSession()
         self.config = Environment()
         self.prisma = Prisma()
         super().__init__(command_prefix=".", intents=nextcord.Intents.all())
 
-    async def on_ready(self):
+    async def on_ready(self) -> None:
         self.logger.info(f"Logged in as {self.user} ({self.user.id})")
 
     async def close(self) -> None:
@@ -48,7 +48,7 @@ class Skurczybyk(commands.Bot):
             self._auto_setup(f"{extensions.parent}.{extensions.name}.{path.stem}")
         self.logger.info("Loaded all extensions!")
 
-    def run(self, *args: t.Any, **kwargs: t.Any):
+    def run(self, *args: t.Any, **kwargs: t.Any) -> None:
         self.loop.run_until_complete(self.prisma.connect())
         self._load_all_extensions()
         self.logger.info("Starting...")
