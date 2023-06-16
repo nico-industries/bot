@@ -60,5 +60,7 @@ class Skurczybyk(commands.Bot):
 
     @property
     def user(self) -> nextcord.ClientUser:
-        assert super().user
-        return super().user
+        _user = super().user
+        if not _user:
+            raise RuntimeError("Bot is not logged in!")
+        return _user
