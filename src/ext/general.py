@@ -7,5 +7,5 @@ if t.TYPE_CHECKING:
 
 
 class General(BaseCog):
-    def __init__(self, bot: "Skurczybyk"):
+    def __init__(self, bot: "Skurczybyk") -> None:
         super().__init__(bot)
