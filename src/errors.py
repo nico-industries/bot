@@ -29,4 +29,4 @@ class ConversionError(SkurczybykException):
         super().__init__(str(self))
 
     def __str__(self) -> str:
-        return f"Failed to convert {self.name} to {self.value}: {self.error}"
+        return f"Failed to convert {self.name} to {self.value.__qualname__}: {self.error}"
