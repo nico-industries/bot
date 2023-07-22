@@ -815,13 +815,13 @@ virtualenv = ">=20.10.0"
 
 [[package]]
 name = "prisma"
-version = "0.8.2"
+version = "0.9.1"
 description = "Prisma Client Python is an auto-generated and fully type-safe database client"
 optional = false
 python-versions = ">=3.7.0"
 files = [
-    {file = "prisma-0.8.2-py3-none-any.whl", hash = "sha256:4d0ebf63ecd21bc4fda633867403429d24f89e6af5889944b2f9ca4203f50835"},
-    {file = "prisma-0.8.2.tar.gz", hash = "sha256:b3a639941f4bf33dbd414fee3e02cf30218968d05b108f8a4d5b7c331dcbc19c"},
+    {file = "prisma-0.9.1-py3-none-any.whl", hash = "sha256:a59447cee28cb04a6c480f875d50bb1a1c1661013a81d3145114d39fd53a806c"},
+    {file = "prisma-0.9.1.tar.gz", hash = "sha256:c8a58845833890da931f0d04719ae6506dc86f018b46bb3084402d0d38af8e23"},
 ]
 
 [package.dependencies]
@@ -829,10 +829,10 @@ click = ">=7.1.2"
 httpx = ">=0.19.0"
 jinja2 = ">=2.11.2"
 nodeenv = "*"
-pydantic = ">=1.8.0"
+pydantic = ">=1.8.0,<2.0.0"
 python-dotenv = ">=0.12.0"
 tomlkit = "*"
-typing-extensions = ">=3.7"
+typing-extensions = ">=4.0.1"
 
 [package.extras]
 all = ["nodejs-bin"]
@@ -1138,4 +1138,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "0e62e60a54b6a1548ee70d4ef9d5613317418bffdd57b7f3bd35e9bdaed0eb39"
+content-hash = "eb3be4b8d77e6eca8569f804f245076c95546a36f333aba21e0139ccbb90ba27"
