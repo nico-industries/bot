@@ -3,7 +3,7 @@ import typing as t
 from nextcord.ext import commands
 
 __all__: tuple[str, ...] = (
-    "MissingEnvironmentVarriable",
+    "MissingEnvironmentVariable",
     "ConversionError",
 )
 
@@ -12,7 +12,7 @@ class SkurczybykException(commands.CommandError):
     ...
 
 
-class MissingEnvironmentVarriable(SkurczybykException):
+class MissingEnvironmentVariable(SkurczybykException):
     def __init__(self, name: str) -> None:
         self.name = name
         super().__init__(str(self))

@@ -2,14 +2,14 @@ import os
 import typing as t
 from dataclasses import dataclass
 
-from .errors import ConversionError, MissingEnvironmentVarriable
+from .errors import ConversionError, MissingEnvironmentVariable
 from .utils import MISSING
 
 __all__: tuple[str, ...] = ("Environment",)
 
 
 @dataclass(kw_only=True)
-class Varriable:
+class Variable:
     name: str
     default: t.Any = MISSING
     cast: t.Callable[[str], t.Any] = str
@@ -17,7 +17,7 @@ class Varriable:
     def __post_init__(self) -> None:
         self.value = os.getenv(self.name, self.default)
         if self.value is MISSING:
-            raise MissingEnvironmentVarriable(self.name)
+            raise MissingEnvironmentVariable(self.name)
 
         if self.cast is str:
             return
@@ -37,4 +37,4 @@ class Varriable:
 
 
 class Environment:
-    TOKEN = Varriable(name="TOKEN")
+    TOKEN = Variable(name="TOKEN")
