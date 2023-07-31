@@ -7,33 +7,28 @@ from .utils import MISSING
 
 __all__: tuple[str, ...] = ("Environment",)
 
+T = t.TypeVar("T")
+
 
 @dataclass(kw_only=True)
-class Variable:
+class Variable(t.Generic[T]):
     name: str
     default: t.Any = MISSING
-    cast: t.Callable[[str], t.Any] = str
+    cast: t.Type[T] = MISSING
 
     def __post_init__(self) -> None:
         self.value = os.getenv(self.name, self.default)
         if self.value is MISSING:
             raise MissingEnvironmentVariable(self.name)
 
-        if self.cast is str:
-            return
+        if self.cast is not MISSING:
+            try:
+                self.value = self.cast(self.value)
+            except Exception as e:
+                raise ConversionError(self.name, self.cast, e) from e
 
-        try:
-            self.value = self.cast(self.value)
-        except Exception as e:
-            raise ConversionError(self.name, self.cast, e) from e
-
-    def __str__(self) -> str:
-        if self.cast is str:
-            return self.value
-        return str(super())
-
-    def __get__(self, instance: t.Any, owner: t.Any) -> cast:
-        return self.value
+    def __get__(self, instance: t.Any, owner: t.Any) -> T:
+        return t.cast(T, self.value)
 
 
 class Environment:
