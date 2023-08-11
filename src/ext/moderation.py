@@ -18,16 +18,20 @@ class Moderation(BaseCog):
         interaction: Interaction,
         member: Member,
         reason: str = SlashOption(description="Banning reason", required=False),
-        # clear_messages: str = SlashOption(
-        #     description="Clear user's messages", required=False, choices={"yes": "y", "no": "n"}
-        # ),
+        clear_messages: str = SlashOption(
+            description="Clear user's messages", choices={"yes": "y", "no": "n"}, default=False, required=False
+        ),
     ):
         if not reason:
             reason = "No given reason"
         try:
-            # delete_message_seconds = 604800
-            await member.ban(reason=reason)
-            await interaction.send(f"{interaction.user.mention} banned {member.mention}! Reason: {reason}")
+            if not clear_messages:
+                await member.ban(reason=reason)
+                await interaction.send(f"{interaction.user.mention} banned {member.mention}! Reason: {reason}")
+            else:
+                delete_message_seconds = 604800  # week
+                await member.ban(reason=reason, delete_message_seconds=delete_message_seconds)
+                await interaction.send(f"{interaction.user.mention} banned {member.mention}! Reason: {reason}")
         except Forbidden:
             await interaction.send(f"You've got no permission to perform this command!")
         except HTTPException:
