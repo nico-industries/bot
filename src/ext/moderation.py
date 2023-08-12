@@ -1,6 +1,6 @@
 import typing as t
 
-from nextcord import Interaction, Member, Guild, slash_command, Forbidden, HTTPException, SlashOption, Permissions
+from nextcord import Forbidden, HTTPException, Interaction, Member, Permissions, SlashOption, User, slash_command
 
 from . import BaseCog
 
@@ -30,8 +30,7 @@ class Moderation(BaseCog):
                 await member.ban(reason=reason, delete_message_seconds=0)
                 await interaction.send(f"{interaction.user.mention} banned {member.mention}! Reason: {reason}")
             else:
-                delete_message_seconds = 604800  # week
-                await member.ban(reason=reason, delete_message_seconds=delete_message_seconds)
+                await member.ban(reason=reason, delete_message_seconds=604800)
                 await interaction.send(f"{interaction.user.mention} banned {member.mention}! Reason: {reason}")
         except Forbidden:
             await interaction.send(f"You've got no permission to perform this command!")
