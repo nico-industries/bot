@@ -1,6 +1,6 @@
 import typing as t
 
-from nextcord import Interaction, Member, slash_command, Forbidden, HTTPException, SlashOption, Permissions
+from nextcord import Interaction, Member, Guild, slash_command, Forbidden, HTTPException, SlashOption, Permissions
 
 from . import BaseCog
 
@@ -12,21 +12,22 @@ class Moderation(BaseCog):
     def __init__(self, bot: "Skurczybyk") -> None:
         super().__init__(bot)
 
-    @slash_command(description="Ban user", default_member_permissions=Permissions(8))
+    @slash_command(description="Ban user", default_member_permissions=Permissions(administrator=True))
     async def ban(
         self,
         interaction: Interaction,
         member: Member,
-        reason: str = SlashOption(description="Banning reason", required=False),
+        reason: str = SlashOption(description="Banning reason", required=False, default="No reason given"),
         clear_messages: str = SlashOption(
-            description="Clear user's messages", choices=["True", "False"], default=False, required=False
+            description="Clear user's messages",
+            choices=["Yes", "No"],
+            default="No",
+            required=False,
         ),
     ):
-        if not reason:
-            reason = "No reason given"
         try:
-            if clear_messages == "False":
-                await member.ban(reason=reason)
+            if clear_messages == "No":
+                await member.ban(reason=reason, delete_message_seconds=0)
                 await interaction.send(f"{interaction.user.mention} banned {member.mention}! Reason: {reason}")
             else:
                 delete_message_seconds = 604800  # week
