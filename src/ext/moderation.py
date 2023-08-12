@@ -19,13 +19,13 @@ class Moderation(BaseCog):
         member: Member,
         reason: str = SlashOption(description="Banning reason", required=False),
         clear_messages: str = SlashOption(
-            description="Clear user's messages", choices={"yes": "y", "no": "n"}, default=False, required=False
+            description="Clear user's messages", choices=["True", "False"], default=False, required=False
         ),
     ):
         if not reason:
             reason = "No given reason"
         try:
-            if not clear_messages:
+            if clear_messages == "False":
                 await member.ban(reason=reason)
                 await interaction.send(f"{interaction.user.mention} banned {member.mention}! Reason: {reason}")
             else:
