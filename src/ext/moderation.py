@@ -36,5 +36,3 @@ class Moderation(BaseCog):
             await interaction.send(f"You've got no permission to perform this command!")
         except HTTPException:
             await interaction.send(f"Banning failed.")
-        finally:
-            await interaction.send(f"Successfully banned {member.mention}", ephemeral=True)
