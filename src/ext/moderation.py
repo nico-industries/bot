@@ -23,7 +23,7 @@ class Moderation(BaseCog):
         ),
     ):
         if not reason:
-            reason = "No given reason"
+            reason = "No reason given"
         try:
             if clear_messages == "False":
                 await member.ban(reason=reason)
@@ -35,6 +35,6 @@ class Moderation(BaseCog):
         except Forbidden:
             await interaction.send(f"You've got no permission to perform this command!")
         except HTTPException:
-            await interaction.send(f"Banning failed :(")
+            await interaction.send(f"Banning failed.")
         finally:
             await interaction.send(f"Successfully banned {member.mention}", ephemeral=True)
