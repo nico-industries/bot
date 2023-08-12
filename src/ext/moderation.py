@@ -16,7 +16,7 @@ class Moderation(BaseCog):
     async def ban(
         self,
         interaction: Interaction,
-        member: Member,
+        user: User,
         reason: str = SlashOption(description="Banning reason", required=False, default="No reason given"),
         clear_messages: str = SlashOption(
             description="Clear user's messages",
@@ -27,12 +27,12 @@ class Moderation(BaseCog):
     ):
         try:
             if clear_messages == "No":
-                await member.ban(reason=reason, delete_message_seconds=0)
-                await interaction.send(f"{interaction.user.mention} banned {member.mention}! Reason: {reason}")
+                await interaction.guild.ban(user=user, reason=reason, delete_message_seconds=0)
+                await interaction.send(f"{interaction.user.mention} banned {user.display_name}! Reason: {reason}")
             else:
-                await member.ban(reason=reason, delete_message_seconds=604800)
-                await interaction.send(f"{interaction.user.mention} banned {member.mention}! Reason: {reason}")
+                await interaction.guild.ban(user=user, reason=reason, delete_message_seconds=604800)
+                await interaction.send(f"{interaction.user.mention} banned {user.display_name}! Reason: {reason}")
         except Forbidden:
-            await interaction.send(f"You've got no permission to perform this command!")
+            await interaction.send(f"{interaction.user.mention}, you've got no permission to perform this command!")
         except HTTPException:
-            await interaction.send(f"Banning failed.")
+            await interaction.send(f"{interaction.user.mention}, banning failed.", ephemeral=True)
