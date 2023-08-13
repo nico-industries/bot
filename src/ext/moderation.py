@@ -29,12 +29,17 @@ class Moderation(BaseCog):
         ),
     ):
         try:
-            if clear_messages == False:
-                await interaction.guild.ban(user=user, reason=reason, delete_message_seconds=0)
+            if interaction.user == user:
+                await interaction.send(f"{interaction.user.mention}, you can't ban yourself!", ephemeral=True)
             else:
-                await interaction.guild.ban(user=user, reason=reason, delete_message_seconds=604800)
-            await interaction.send(f"{interaction.user.mention} banned {user.display_name}! Reason: {reason}")
+                if not clear_messages:
+                    await interaction.guild.ban(user=user, reason=reason, delete_message_seconds=0)
+                else:
+                    await interaction.guild.ban(user=user, reason=reason, delete_message_seconds=604800)
+                await interaction.send(f"{interaction.user.mention} banned {user.display_name}! Reason: {reason}")
         except Forbidden:
-            await interaction.send(f"{interaction.user.mention}, you've got no permission to perform this command!")
+            await interaction.send(
+                f"{interaction.user.mention}, you've got no permission to perform this command!", ephemeral=True
+            )
         except HTTPException:
             await interaction.send(f"{interaction.user.mention}, banning failed.", ephemeral=True)
