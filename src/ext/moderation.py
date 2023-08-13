@@ -14,7 +14,7 @@ class Moderation(BaseCog):
     def __init__(self, bot: "Skurczybyk") -> None:
         super().__init__(bot)
 
-    @slash_command(description="Ban user", default_member_permissions=Permissions(administrator=True))
+    @slash_command(description="Ban user", default_member_permissions=Permissions(ban_members=True))
     @application_checks.guild_only()
     async def ban(
         self,
