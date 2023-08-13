@@ -1,5 +1,4 @@
 import typing as t
-from datetime import timedelta
 
 from nextcord import Forbidden, HTTPException, Interaction, Permissions, SlashOption, User, slash_command
 from nextcord.ext import application_checks
@@ -29,7 +28,7 @@ class Moderation(BaseCog):
         ),
     ):
         try:
-            if user == None:
+            if user is None:
                 await interaction.send("Something went wrong")
                 return
             if interaction.user == user:
