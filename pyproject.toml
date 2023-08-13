@@ -2,7 +2,7 @@
 name = "bot"
 version = "0.1.0"
 description = ""
-authors = ["miki55555115 <miki55555115@gmail.com>"]
+authors = ["miki55555115 <miki55555115@gmail.com>","pawelek3113 <pawel.kamil.komendera@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
