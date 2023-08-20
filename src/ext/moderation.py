@@ -1,6 +1,16 @@
 import typing as t
 
-from nextcord import Forbidden, HTTPException, Interaction, Permissions, SlashOption, User, slash_command
+from nextcord import (
+    Forbidden,
+    HTTPException,
+    Interaction,
+    Permissions,
+    SlashOption,
+    User,
+    slash_command,
+    Embed,
+    Colour,
+)
 from nextcord.ext import application_checks
 
 from . import BaseCog
@@ -69,3 +79,20 @@ class Moderation(BaseCog):
             )
         except HTTPException:
             await interaction.send(f"{interaction.user.mention}, unbanning failed.", ephemeral=True)
+
+    @slash_command(description="See banned users", default_member_permissions=Permissions(administrator=True))
+    @application_checks.guild_only()
+    async def bans(self, interaction: Interaction):
+        ban_list: list[dict] = [{entry.user.name: entry.reason} async for entry in interaction.guild.bans()]
+
+        embed = Embed(
+            color=Colour(0x0075F2),
+            title="Ban List",
+            description="See banned users and their banning reason.",
+        )
+
+        for entry in ban_list:
+            for name, reason in entry.items():
+                embed.add_field(name=f"• {name}", value=reason, inline=False)
+
+        await interaction.send(embed=embed)
