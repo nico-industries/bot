@@ -96,3 +96,26 @@ class Moderation(BaseCog):
                 embed.add_field(name=f"• {name}", value=reason, inline=False)
 
         await interaction.send(embed=embed)
+
+    @slash_command(description="Unban user", default_member_permissions=Permissions(ban_members=True))
+    @application_checks.guild_only()
+    async def unban(
+        self,
+        interaction: Interaction,
+        user: User,
+    ):
+        try:
+            if user is None:
+                await interaction.send("Something went wrong")
+                return
+            if interaction.user == user:
+                await interaction.send(f"{user.mention}, you can't unban yourself", ephemeral=True)
+                return
+            await interaction.guild.unban(user)
+            await interaction.send(f"{interaction.user.mention} unbanned {user.display_name}!")
+        except Forbidden:
+            await interaction.send(
+                f"{interaction.user.mention}, you've got no permission to perform this command!", ephemeral=True
+            )
+        except HTTPException:
+            await interaction.send(f"{interaction.user.mention}, unbanning failed.", ephemeral=True)
