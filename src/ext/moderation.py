@@ -87,7 +87,7 @@ class Moderation(BaseCog):
 
         embed = Embed(
             color=Colour(0x0075F2),
-            title="Ban List",
+            title="List of bans",
             description="See banned users and their banning reason.",
         )
 
