@@ -18,10 +18,10 @@ class Moderation(BaseCog):
     async def ban(
         self,
         interaction: Interaction,
-        user: User,
-        reason: str = SlashOption(description="Ban reason", required=False, default="No reason given"),
+        user: User = SlashOption(description="Decide who should be banned"),
+        reason: str = SlashOption(description="Describe ban reason", required=False, default="No reason given"),
         clear_messages: bool = SlashOption(
-            description="Clear user's messages",
+            description="Choose whether clear user's messages or not",
             choices={"Yes": True, "No": False},
             default=False,
             required=False,
@@ -29,7 +29,7 @@ class Moderation(BaseCog):
     ):
         try:
             if user is None:
-                await interaction.send("Something went wrong")
+                await interaction.send("Something went wrong.", ephemeral=True)
                 return
             if interaction.user == user:
                 await interaction.send(f"{user.mention}, you can't ban yourself!", ephemeral=True)
@@ -51,12 +51,12 @@ class Moderation(BaseCog):
     async def kick(
         self,
         interaction: Interaction,
-        user: User,
-        reason: str = SlashOption(description="Kick reason", required=False, default="No reason given"),
+        user: User = SlashOption(description="Decide who should be kicked"),
+        reason: str = SlashOption(description="Describe kick reason", required=False, default="No reason given"),
     ):
         try:
             if user is None:
-                await interaction.send("Something went wrong")
+                await interaction.send("Something went wrong.", ephemeral=True)
                 return
             if interaction.user == user:
                 await interaction.send(f"{interaction.user.mention}, you can't kick yourself!", ephemeral=True)
