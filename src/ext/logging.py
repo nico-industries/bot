@@ -55,7 +55,7 @@ class Logging(BaseCog):
                 timestamp=created_at,
             )
             .add_field(
-                name="Invokation details",
+                name="Invocation details",
                 value=(
                     "```yaml\n"
                     f"Guild: {guild.name} ({guild.id})\n"
