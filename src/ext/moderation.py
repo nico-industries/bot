@@ -10,6 +10,7 @@ from nextcord import (
     slash_command,
     Embed,
     Colour,
+    Emoji,
 )
 from nextcord.ext import application_checks
 
@@ -86,9 +87,13 @@ class Moderation(BaseCog):
         ban_list: list[dict] = [{entry.user.name: entry.reason} async for entry in interaction.guild.bans()]
 
         embed = Embed(
-            color=Colour(0x0075F2),
-            title="List of bans",
+            color=Colour(0x1EA9FF),
             description="See banned users and their banning reason.",
+        )
+
+        embed.set_author(
+            name="List of bans",
+            icon_url="https://lh3.googleusercontent.com/drive-viewer/AITFw-xNjHq5ShLIkWYl0hgoufXyOwwqBpceO_e--RolWCfXwlRBx1DWjwyZ6zcN48nm9r7ZmSSvDibtc3bBaBXExAx1urBr=w3024-h1514",
         )
 
         for entry in ban_list:
