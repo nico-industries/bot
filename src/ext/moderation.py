@@ -96,8 +96,11 @@ class Moderation(BaseCog):
             icon_url="https://lh3.googleusercontent.com/drive-viewer/AITFw-xNjHq5ShLIkWYl0hgoufXyOwwqBpceO_e--RolWCfXwlRBx1DWjwyZ6zcN48nm9r7ZmSSvDibtc3bBaBXExAx1urBr=w3024-h1514",
         )
 
-        for entry in ban_list:
-            for name, reason in entry.items():
-                embed.add_field(name=f"• {name}", value=reason, inline=False)
+        if ban_list is not None and ban_list:
+            for entry in ban_list:
+                for name, reason in entry.items():
+                    embed.add_field(name=f"• {name}", value=reason, inline=False)
+        else:
+            embed.add_field(name="", value="No banned users.")
 
         await interaction.send(embed=embed)
