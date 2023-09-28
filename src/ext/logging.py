@@ -43,7 +43,7 @@ class Logging(BaseCog):
             name = context.application_command.get_mention()
             _options = context.data.get("options")
 
-            args = " ".join(f"{option['name']}={option['value']}" for option in _options)
+            args = " ".join(f"{option['name']}={option['value']}" for option in _options) if _options else ""
 
         guild = context.guild
         channel = context.channel
