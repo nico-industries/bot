@@ -1,19 +1,10 @@
 import typing as t
 
-from nextcord import (
-    Forbidden,
-    HTTPException,
-    Interaction,
-    Permissions,
-    SlashOption,
-    User,
-    slash_command,
-    Embed,
-    Colour,
-)
+from nextcord import Colour, Forbidden, HTTPException, Interaction, Permissions, SlashOption, User, slash_command
 from nextcord.ext import application_checks
 
 from . import BaseCog
+from .pagination import PaginationView
 
 if t.TYPE_CHECKING:
     from .. import Skurczybyk
@@ -85,18 +76,24 @@ class Moderation(BaseCog):
     async def bans(self, interaction: Interaction):
         ban_list: list[dict] = [{entry.user.name: entry.reason} async for entry in interaction.guild.bans()]
 
-        embed = Embed(
-            color=Colour(0x0075F2),
+        data = []
+
+        if ban_list:
+            for entry in ban_list:
+                data.append(*((f"• {name}", reason) for (name, reason) in entry.items()))
+        else:
+            data = [("", "No banned users")]
+
+        bans_view = PaginationView(
+            data,
             title="List of bans",
             description="See banned users and their banning reason.",
+            color=Colour(0x1EA9FF),
+            icon_url="https://lh3.googleusercontent.com/drive-viewer/AITFw-xNjHq5ShLIkWYl0hgoufXyOwwqBpceO_e--RolWCfXwlRBx1DWjwyZ6zcN48nm9r7ZmSSvDibtc3bBaBXExAx1urBr=w3024-h1514",
         )
 
-        for entry in ban_list:
-            for name, reason in entry.items():
-                embed.add_field(name=f"• {name}", value=reason, inline=False)
-
-        await interaction.send(embed=embed)
-
+        await bans_view.send(interaction=interaction)
+    
     @slash_command(description="Unban user", default_member_permissions=Permissions(ban_members=True))
     @application_checks.guild_only()
     async def unban(

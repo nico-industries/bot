@@ -14,4 +14,4 @@ COPY . .
 
 # Start the bot
 ENTRYPOINT ["poetry", "run"]
-CMD ["python", "-m", "src"]
+CMD ["python", "-u", "-m", "src"]

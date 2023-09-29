@@ -33,3 +33,4 @@ class Variable(t.Generic[T]):
 
 class Environment:
     TOKEN = Variable(name="TOKEN")
+    LOG_CHANNEL_ID = Variable(name="LOG_CHANNEL_ID", cast=int)
