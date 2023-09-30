@@ -93,26 +93,54 @@ class Moderation(BaseCog):
         )
 
         await bans_view.send(interaction=interaction)
-    
+
     @slash_command(description="Unban user", default_member_permissions=Permissions(ban_members=True))
     @application_checks.guild_only()
     async def unban(
         self,
         interaction: Interaction,
-        user: User,
+        user_name: str = SlashOption(name="user", description="Decide who should be unbanned"),
     ):
         try:
-            if user is None:
-                await interaction.send("Something went wrong")
+            if not user_name:
+                await interaction.send("Something went wrong.", ephemeral=True)
                 return
-            if interaction.user == user:
-                await interaction.send(f"{user.mention}, you can't unban yourself", ephemeral=True)
+            if interaction.user.name == user_name:
+                await interaction.send(f"{interaction.user.mention}, you can't unban yourself!", ephemeral=True)
                 return
-            await interaction.guild.unban(user)
-            await interaction.send(f"{interaction.user.mention} unbanned {user.display_name}!")
+
+            banned_users: list[User] = [entry.user async for entry in interaction.guild.bans()]
+            banned_users_names: dict[str, User] = self.get_user_by_username(banned_users)
+
+            banned_user: User = banned_users_names.get(user_name)
+            if banned_user is None:
+                await interaction.send(f"{interaction.user.mention}, user not found!", ephemeral=True)
+                return
+            await interaction.guild.unban(banned_user)
+            await interaction.send(f"{interaction.user.mention} unbanned {banned_user.mention}!")
+
         except Forbidden:
             await interaction.send(
                 f"{interaction.user.mention}, you've got no permission to perform this command!", ephemeral=True
             )
         except HTTPException:
             await interaction.send(f"{interaction.user.mention}, unbanning failed.", ephemeral=True)
+
+    def get_user_by_username(self, list_of_users: list[User]) -> dict[str, User]:
+        return {user.name: user for user in list_of_users}
+
+    @unban.on_autocomplete("user_name")
+    async def banned_user(self, interaction: Interaction, user: str):
+        banned_users_names: list[str] = [entry.user.name async for entry in interaction.guild.bans()]
+
+        if not user:
+            await interaction.response.send_autocomplete(banned_users_names)
+            return
+
+        get_near_banned_user: list[str] = [
+            banned_user_name
+            for banned_user_name in banned_users_names
+            if banned_user_name.lower().startswith(user.lower())
+        ]
+
+        await interaction.response.send_autocomplete(get_near_banned_user)
