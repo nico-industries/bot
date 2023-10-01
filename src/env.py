@@ -1,6 +1,7 @@
 import os
 import typing as t
 from dataclasses import dataclass
+from functools import cached_property
 
 from .errors import ConversionError, MissingEnvironmentVariable
 from .utils import MISSING
@@ -13,22 +14,25 @@ T = t.TypeVar("T")
 @dataclass(kw_only=True)
 class Variable(t.Generic[T]):
     name: str
-    default: t.Any = MISSING
-    cast: t.Type[T] = MISSING
+    default: T = MISSING
+    cast: type[T] = MISSING
 
-    def __post_init__(self) -> None:
-        self.value = os.getenv(self.name, self.default)
-        if self.value is MISSING:
+    @cached_property
+    def value(self) -> T:
+        _value = os.getenv(self.name, self.default)
+        if _value is MISSING:
             raise MissingEnvironmentVariable(self.name)
 
         if self.cast is not MISSING:
             try:
-                self.value = self.cast(self.value)
+                _value = self.cast(_value)
             except Exception as e:
                 raise ConversionError(self.name, self.cast, e) from e
 
+        return t.cast(T, _value)
+
     def __get__(self, instance: t.Any, owner: t.Any) -> T:
-        return t.cast(T, self.value)
+        return self.value
 
 
 class Environment:
