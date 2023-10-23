@@ -1,6 +1,5 @@
 from datetime import datetime
 from math import ceil
-from typing import Tuple
 
 from nextcord import ButtonStyle, Colour, Embed, Interaction, ui
 
@@ -10,18 +9,16 @@ class PaginationView(ui.View):
 
     def __init__(
         self,
-        data: list[Tuple] = [],
+        data: list[tuple[str, str] | dict[str, str]],
         *,
         title: str | None = "Not specified",
         description: str | None = None,
         separator: int = 5,
-        icon_url: str
-        | None = "https://lh3.googleusercontent.com/drive-viewer/AITFw-z_IgjwziybK0dE7JNu5i92UEkthC_H89iGhNIiUN_i1cuEnYbi9ijZPBnGRsOGNm465Rzu_GkviBlhjxwAXEp8uNGKxg=w3024-h1514",
+        icon_url: str | None = None,
         color: Colour | None = Colour(0xADD8E6),
-        timeout: float | None = 180,
-        auto_defer: bool = True,
+        **kwargs,
     ) -> None:
-        super().__init__(timeout=timeout, auto_defer=auto_defer)
+        super().__init__(**kwargs)
         self.data = data
         self.title = title
         self.description = description
@@ -49,11 +46,10 @@ class PaginationView(ui.View):
 
     def create_embed(self, data):
         embed = (
-            Embed(color=self.color, description=self.description)
+            Embed(color=self.color, description=self.description, timestamp=datetime.utcnow())
             .set_author(name=self.title, icon_url=self.icon_url)
             .set_footer(text=f"Page {self.current_page} of {self.last_page}")
         )
-        embed.timestamp = datetime.utcnow()
 
         for name, value in data:
             embed.add_field(name=name, value=value, inline=False)
