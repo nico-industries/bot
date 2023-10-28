@@ -734,12 +734,12 @@ files = [
 
 [[package]]
 name = "nextcord"
-version = "2.5.0"
+version = "2.6.0"
 description = "A Python wrapper for the Discord API forked from discord.py"
 optional = false
 python-versions = ">=3.8.0"
 files = [
-    {file = "nextcord-2.5.0.tar.gz", hash = "sha256:71496c56eb8a1f037d6561c650bbbfd295247de8a3589c029345473c5c1bbd32"},
+    {file = "nextcord-2.6.0.tar.gz", hash = "sha256:ccf461157be682cbceaa474e8df4afa302351b8d6ced632f9ccb7aa647b092e7"},
 ]
 
 [package.dependencies]
@@ -1145,4 +1145,5 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "3ee373258c60072b8f02f4744ef2b944ab238044a09cf68a636ca231acb67a80"
+
+content-hash = "76d031a54a13886a4e05bb0a11ea7dea0cbc487b648650670c545d41f5237c0f"
