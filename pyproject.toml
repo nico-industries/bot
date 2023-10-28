@@ -8,7 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11"
 nextcord = "^2.6.0"
-aiohttp = "^3.8.5"
+aiohttp = "^3.8.6"
 prisma = "^0.11.0"
 
 
