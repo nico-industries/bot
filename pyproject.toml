@@ -16,7 +16,7 @@ prisma = "^0.11.0"
 python-dotenv = "^1.0.0"
 pre-commit = "^3.5.0"
 ruff = "^0.1.5"
-isort = "^5.12.0"
+isort = "^5.13.1"
 black = "^23.11.0"
 
 [build-system]
